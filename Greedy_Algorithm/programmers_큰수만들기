@@ -1,3 +1,4 @@
+
 def solution(number, k):
     answer = [] # Stack
     
@@ -8,3 +9,6 @@ def solution(number, k):
         answer.append(num)
         
     return ''.join(answer[:len(answer) - k])
+
+
+
