@@ -1,0 +1,62 @@
+
+#현재 나이트의 위치 파악
+where=input()
+x=where[0]
+y=int(where[1])
+
+count=0
+
+#오2위1
+if x != 'g' and x !='h' and y !=1:
+    count +=1
+    
+#오2아래1
+if x != 'g' and x !='h' and y !=8:
+    count +=1
+    
+#왼2위1
+if x != 'a' and x !='b' and y !=1:
+    count +=1
+
+#왼2아래1
+if x != 'a' and x !='b' and y !=8:
+    count +=1
+
+#아래2오1
+if x != 'h' and y !=7 and y !=8:
+    count +=1
+
+#아래2왼1
+if x != 'a' and y !=7 and y !=8:
+    count +=1
+    
+#위2오1
+if x != 'h' and y !=1 and y !=2:
+    count +=1
+    
+#위2왼1
+if x != 'a' and y !=1 and y !=2:
+    count +=1
+
+print(count)
+
+
+## _____________________________________________________________________
+## -- Solution2 -- ##
+
+
+start = list(input())
+col = ord(start[0])-ord('a')+1  #ord(): 문자는 아스키 고드로 변환
+row = int(start[1])
+cnt = 0
+
+# 조건에 맞게 움직이는 경우의 수
+dx = [-1,1,2,2,1,-1,-2,-2]
+dy = [2,2,1,-1,-2,-2,-1,1]
+for i in range(len(dx)):
+    nx = col+dx[i]
+    ny = row+dy[i]
+    if nx<=8 and nx>=1 and ny>=1 and ny<=8:
+        cnt+=1
+
+print(cnt)
