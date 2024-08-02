@@ -16,6 +16,7 @@ while numbers:
         idx.rotate(-(num - 1))
     else:
         numbers.rotate(-num)
-        
+        idx.rotate(-num)
 
+print(*ballon)
 
