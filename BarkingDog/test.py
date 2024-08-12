@@ -1,65 +1,51 @@
 import sys
-from collections import deque
-
 input = sys.stdin.readline
 
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
+
+def rotate(s):
+    s = zip(*s[::-1])
+    return [list(e) for e in s]
 
 
+def put(sticker):
+    sr, sc = len(sticker), len(sticker[0])
 
-def bfs():
-    while q:
-        
-        x, y = q.popleft()
-       
-        cur = graph[x][y] # 현재위치
-        for i in range(4):
-            nx, ny =x+dx[i], y+dy[i]
-            if cur == '*':
-                if ny < 0 or ny >= w or nx < 0 or nx >= h:
-                    continue
-            # elif cur == '@':
-            else:
-                if ny < 0 or ny >= w or nx < 0 or nx >= h:
-                    
-                    return visited[x][y] + 1
-                    # break    #>> 여기에 break를 하게 되면 while문을 빠져나가서 else를 만나 항상 IMPOSSIBLE 출력
-                    
-                visited[nx][ny] = visited[x][y] + 1
-                
-            
-            if graph[nx][ny] == '*':
-                continue
-            if graph[nx][ny] == '#':
-                continue
-            
-        
-            
-            if graph[nx][ny] == '@':
-                continue;
-            
-            graph[nx][ny] = cur # 다음좌표를 상근이 or 물로변경
-            q.append((nx,ny))
-    return "IMPOSSIBLE"
-    
-    
+    for x in range(n - sr + 1):
+        for y in range(m - sc + 1):
+            if compare(x, y, sr, sc, sticker):
+                for sx in range(sr):
+                    for sy in range(sc):
+                        laptop[x + sx][y + sy] += sticker[sx][sy]
+                return True
+
+    return False
 
 
-n = int(input())
-for i in range(n):
-    w, h = map(int, input().split())
+def compare(x, y, sr, sc, sticker):
+    for sx in range(sr):
+        for sy in range(sc):
+            if laptop[x + sx][y + sy] == sticker[sx][sy] == 1:
+                return False
 
-    q = deque()
-    visited = [[-1]*w for _ in range(h)]
-    graph = [list(input().strip()) for _ in range(h)]
-    for x in range(h):
-        for y in range(w):
-            if graph[x][y] == '*':
-                q.appendleft((x,y))
-            elif graph[x][y] =='@':
-                q.append((x,y))
-                visited[x][y] =0
-                
-    print(bfs())
-            
+    return True
+
+
+n, m, k = map(int, input().split())
+
+laptop = [[0] * m for _ in range(n)]
+stickers = []
+
+for _ in range(k):
+    r, c = map(int, input().split())
+    sticker = [list(map(int, input().split())) for _ in range(r)]
+    stickers.append(sticker)
+
+for sticker in stickers:
+    for i in range(4):
+        if put(sticker):
+            break
+        sticker = rotate(sticker)
+
+cnt = sum(map(sum, laptop))
+
+print(cnt)
