@@ -5,6 +5,8 @@ n = int(input())
 
 dp = [[0]*10 for _ in range(n+1)]
 
+print(dp)
+
 for i in range(1,10):
     dp[1][i] = 1
 
