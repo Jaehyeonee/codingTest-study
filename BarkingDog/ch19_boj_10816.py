@@ -18,3 +18,4 @@ for m in problem:
     print(n_dic[m], end=' ')
   else:
      print(0, end=' ')
+

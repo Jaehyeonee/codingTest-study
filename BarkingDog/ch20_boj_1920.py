@@ -1,4 +1,4 @@
-https://dev-sungjun.tistory.com/30
+# https://dev-sungjun.tistory.com/30
 import sys
 input = sys.stdin.readline
 n = int(input())
