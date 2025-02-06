@@ -2,28 +2,30 @@ import sys
 input = sys.stdin.readline
 
 n = int(input())
-card = sorted([map(int, input().split())])
+card = sorted(list(map(int, input().strip().split())))
+
 m = int(input())
-problem = [map(int,input().split())]
+nums =list(map(int, input().strip().split()))
 dic = {}
 
-for c in card:
-    if c in dic:
-        dic[c] += 1
+for i in card:
+    if i in dic:
+        dic[i] += 1
     else:
-        dic[c] = 1 
+        dic[i] = 1
 
-def binary_search(card, p, start, end):
+
+def binary_search(card, target, start, end):
     if start > end :
         return 0
     mid = (start + end)//2
-    if p == card[mid]:
-        return dic[mid]
+    if target == card[mid]:
+        return dic[target]
     
-    elif p < card[mid]:
-        return binary_search(start, mid-1)
+    elif target < card[mid]:
+        return binary_search(card, target, start, mid-1)
     else:
-        return binary_search(mid+1, end)
+        return binary_search(card, target, mid+1, end)
 
-for target in problem:
-    print(binary_search(card, target, 0, n-1, end=' '))
+for target in nums:
+    print(binary_search(card, target, 0, n-1),end=' ')

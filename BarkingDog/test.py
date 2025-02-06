@@ -1,12 +1,21 @@
 import sys
 input = sys.stdin.readline
 
-n, m = map(int, input().split())
+n = int(input())
+card = sorted(list(map(int, input().strip().split())))
 
-list_a = list(map(int, input().split()))
-list_b = list(map(int, input().split()))
+m = int(input())
+nums =list(map(int, input().strip().split()))
+dic = {}
 
-c = list_a + list_b
-c.sort()
+for i in card:
+    if i in dic:
+        dic[i] += 1
+    else:
+        dic[i] = 1
 
-print(' '.join(map(str, c)))
+for target in nums:
+    if target in dic:
+        print(dic[target], end = ' ')
+    else:
+        print(0, end=' ')
