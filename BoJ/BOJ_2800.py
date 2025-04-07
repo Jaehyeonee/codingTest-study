@@ -52,3 +52,49 @@ for mask in range(1, 1<<len(braces)):
     
 for r in sorted(result):
     print(r)
+
+
+'''함수화 하기'''
+# 괄호 쌍 만들기
+expr = input().strip()
+braces = []
+stack = []
+
+for i, ch in enumerate(expr):
+    if ch == '(':
+        stack.append(i)
+    elif ch == ')':
+        x = stack.pop()
+        braces.append((x, i))
+
+# 괄호 제거 조합 만들기 (itertools 없이 powerset 구현)
+def get_subsets(braces):
+    n = len(braces)
+    result = []
+    for mask in range(1, 1 << n):  # 1부터 시작: 공집합 제외
+        subset = []
+        for i in range(n):
+            if mask & (1 << i):
+                subset.append(braces[i])
+        result.append(subset)
+    return result
+
+# 괄호를 제거한 새로운 식 만들기
+result_set = set()
+subsets = get_subsets(braces)
+
+for subset in subsets:
+    to_remove = set()
+    for x, y in subset:
+        to_remove.add(x)
+        to_remove.add(y)
+    
+    new_expr = ''
+    for i in range(len(expr)):
+        if i not in to_remove:
+            new_expr += expr[i]
+    result_set.add(new_expr)
+
+# 결과 출력
+for res in sorted(result_set):
+    print(res)
