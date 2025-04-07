@@ -1,4 +1,6 @@
 # solution1. 브루트 포스 >> 최적화X >> 시간 복잡도:  O(n^2)
+
+
 from itertools import combinations
 from functools import reduce
 def solution1(fruit, k):
