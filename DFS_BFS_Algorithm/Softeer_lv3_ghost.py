@@ -1,87 +1,72 @@
 
-
+'''
+Queue에 남우를 먼저 넣고 ghost를 넣어서 진행
+'''
 # https://softeer.ai/practice/7726
 
-import sys
 from collections import deque
+n, m = map(int, input().split())
+graph = [list(map(str, input().strip())) for _ in range(n)]
+# print(graph)
+# 상우하좌
+dx = [-1, 0, 1, 0]
+dy = [0, 1, 0, -1]
 
-n, m = map(int, sys.stdin.readline().split())
-graph=[]
+def bfs():
+    while len(q) != 0:
+        x, y, char = q.popleft()
+        for d in range(4):
+            nx = x+dx[d]
+            ny = y+dy[d]
+
+            #격자 범위에 있는동안
+            if 0 <= nx < n and 0 <= ny < m:
+                # 현재 남우일 때
+                if char == 'N':
+                    # 탈출구이면 answer를 yes로
+                    if graph[nx][ny] == 'D':     
+                        answer = 'Yes'
+                        return answer
+                    # 현재 위치에서 이동할 다음 칸이 ghost, 남우 둘다 방문한 적이 없고 빈칸이면      
+                    if visted_ghost[nx][ny] == 0 and visited_namu[nx][ny] == 0 and graph[nx][ny] == '.':
+                        # 남우가 방문한 것으로 표시
+                        visited_namu[nx][ny] = 1
+                        # 이동한 새로운 위치를 queue에 넣어줌
+                        q.append((nx, ny, char))
+                # 현재 ghost일 때
+                elif char == 'G':
+                    # ghost가 방문한 적 없는 곳이면
+                    if visted_ghost[nx][ny] == 0:
+                        # 방문 처리하고, 
+                        visted_ghost[nx][ny] = 1
+                        # 이동한 새로운 ghost위치를 q에 삽입
+                        q.append((nx, ny, char))
+
+    # 탈출구를 찾지 못했다면 answer= no
+    answer = 'No'
+    return answer
+                        
+                                    
 q = deque()
-exitloc =[]
-namwoo =[]
-ghost = deque()
+# ghost와 남우의 방문 처리를 따로 해줌.
+visted_ghost = [[0] * m for _ in range(n)]
+visited_namu = [[0] * m for _ in range(n)]
 
 
-# 격자 정보
+# extend하기 위한 임시 배열
+ghost = []
+
+# 초기에 남우와 귀신이 있는 위치 정보 queue에 담기
 for i in range(n):
-    li = list(sys.stdin.readline())
-
-    if 'N' in li: # 남우 좌표 저장
-        x, y = i, li.index('N')
-        namwoo.append((x,y))
-        q.append((x,y))
-    if 'G' in li: # ghost 좌표 저장
-        x, y = i, li.index('G')
-        ghost.append((x,y))
-    if 'D' in li: # 탈출구 좌표 저장
-        x, y = i, li.index('D')
-        exitloc.append(x)
-        exitloc.append(y)
-
-    graph.append(li)
-print(q)
-print(namwoo)
-
-# 맨해튼 거리로 출구과 남우 위치의 최소 거리
-initial_dist = 0
-initial_dist = abs(namwoo[0][0]-exitloc[0]) + abs(namwoo[0][1]-exitloc[1])
-
-ghost_short = int(1e9)
-
-while ghost:
-    x,y = ghost.popleft()
-    ghost_short = min(ghost_short, abs(x-exitloc[0])+abs(y-exitloc[1]))
-
-# 유령이 먼저 도착하니까 남우가 탈출할 수 없음.    
-if ghost_short <= initial_dist:
-    print("No")
-
-else:
-    visit = [[0]* m for _ in range(n)]
-    dx = [-1, 1, 0 ,0]
-    dy = [0 ,0 , -1, 1]
-
-    exit_time = int(1e9)
-
-    while q:
-        print("q: ", q)
-        print(visit)
-        x, y = q.popleft()
-
-        for i in range(4): # 상하좌우 4개 방향 돌기
-            nx = x+dx[i]
-            ny = y+dy[i]
-
-            print("현좌표: ", (nx,ny))
-
-            # 진행가능한 방향이라면
-            if 0<= nx < n and 0<= ny < m and (graph[nx][ny]=='.' or graph[nx][ny]=='D'):
-                q.append((nx,ny))
-                visit[nx][ny] = 1
-
-            elif visit[nx][ny] == 1:
-                continue
-        
-        
-
-
-        if graph[x][y] == 'D':
-            print("도착")
-            break
-        
-
-
+    for j in range(m):
+        if graph[i][j] == 'N':
+            q.append((i, j, 'N'))
+            visited_namu[i][j] = 1    #처음 남우가 있던 곳은 방문한 것으로 해줘야 하니까
+        if graph[i][j] == 'G':
+            ghost.append((i, j,'G'))
+            visted_ghost[i][j] = 1    #처음 ghost들이 있던 곳은 방문한 것으로 해줘야 하니까 (ghost는 1개 이상일 수 있음)
             
+q.extend(ghost) # extend 함수로 남우의 큐 뒤에 ghost 정보 추가
+print(bfs())
 
         
