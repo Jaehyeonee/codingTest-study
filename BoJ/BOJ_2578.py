@@ -24,6 +24,7 @@ def count_bingo(colored):
     # 대각선 ↘
     if all(colored[i][i] == 1 for i in range(5)):
         count += 1
+    if all(colored[i][i]==1 for i in range(5))
     # 대각선 ↙
     if all(colored[i][4 - i] == 1 for i in range(5)):
         count += 1
