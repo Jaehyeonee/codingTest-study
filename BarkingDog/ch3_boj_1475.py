@@ -18,7 +18,7 @@ for i in range(len(word)):
     else:
         ans[num] += 1
 
- 
+map()
 print(max(ans))
 
 
