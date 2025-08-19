@@ -6,19 +6,17 @@ n, m, r = map(int, input().split())
 matrix = [list(map(int, input().split())) for _ in range(n)]
 deq = deque()
 cycle = min(n,m)//2
-result = [[0]*m for _ in range(n)]
+result = [[0] * m for _ in range(n)]
+
 
 for cy in range(cycle):
     deq.extend(matrix[cy][cy:m-cy])
     deq.extend([row[m-cy-1] for row in matrix[cy+1:n-cy-1]])
-    deq.extend(matrix[n-cy-1][cy:m-cy][::-1])
+    deq.extend(matrix[n-cy-1][cy:m-cy][::-1]) 
     deq.extend([row[cy] for row in matrix[cy+1:n-cy-1][::-1]])
-
-    # print(deq)
 
     deq.rotate(-r)
     # print(deq)
-
 
     for j in range(cy, m-cy):
         result[cy][j] = deq.popleft()
@@ -40,5 +38,25 @@ for r in result:
 2 11 10 16
 1 7 6 15
 5 9 13 14
+'''
+
+
+'''
+Top left
+right top
+
+void rotate(int box){
+    for(int i = 0; i<bo; i++);
+    int r= i
+    int c = i;
+
+    int k = 0;
+    while(k<4){
+    
+    }
+
+
+}
+
 
 '''
