@@ -15,6 +15,7 @@ dp = [1] * N           # 부분 수열 즉, 자기 자신으로도 수열 하나
 for i in range(N-1):
     for j in range(i+1, N):
         if A[i] < A[j]:
+            print(A[i],A[j])
             dp[j] = max(dp[j], dp[i] + 1)
 
 
